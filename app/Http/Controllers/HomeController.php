@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Complaint;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -24,8 +25,16 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user=User::where('id',auth()->user()->id)->firstOrfail();
-        $complaints=$user->complaints;
+        if (auth()->user()->role == 'User'){
+            $user=User::where('id',auth()->user()->id)->firstOrfail();
+        $complaints=$user->complaints;}
+        elseif (auth()->user()->role == 'Software')
+            $complaints=Complaint::where('type','Software')->get();
+        else
+            $complaints=Complaint::where('type','Hardware')->get();
+
+
+
 
         return view('home',['complaints' => $complaints]);
     }

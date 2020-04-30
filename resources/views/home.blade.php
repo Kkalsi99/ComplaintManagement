@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header flex justify"><H2>Dashboard <a href="/complaint" class="btn btn-primary mb-2 " style="float:right;">New Complaint</a></H2>
+                <div class="card-header flex justify"><H2>Dashboard @if(auth::user()->role=='User')<a href="/complaint" class="btn btn-primary mb-2 " style="float:right;">New Complaint</a>@endif</H2>
 
                 </div>
 
@@ -17,7 +17,7 @@
                     @foreach($complaints as $complaint)
                             <div class="card my-3 " style="">
                                 <div class="card-body">
-                                    <h5 class="card-title text-center">Complaint</h5>
+                                    <h5 class="card-title text-center">Complaint {{auth::user()->role}}</h5>
                                     <p class="card-text">Type : {{$complaint->type}}</p>
                                     <p class="card-text">Content : {{$complaint->body}}</p>
                                     <p class="card-text ">Registered at : {{$complaint->created_at}}</p>
@@ -25,8 +25,21 @@
                                         <p class="card-text">Completed on : {{$complaint->updated_at}}</p>
                                         <a href="#" class="btn btn-success mb-2">{{$complaint->status}}</a>
                                         @else
-                                        <a href="#" class="btn btn-primary mb-2">{{$complaint->status}}</a>
+                                            @if(auth::user()->role!='User')<form method="POST" action="/complaint/resolve">
+                                            @csrf
+                                            <input name="id" value="{{$complaint->id}}" hidden>
+
+                                                    <button type="submit" class="btn btn-primary">
+                                                        {{ __('Resolve') }}
+                                                    </button>
+                                                </form>
+
+
+                                                @else
+                                                    <a href="#" class="btn btn-primary mb-2">{{$complaint->status}}</a>
+                                            @endif
                                         @endif
+
 
                                 </div>
                             </div>

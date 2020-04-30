@@ -51,19 +51,27 @@ class ComplaintController extends Controller
         return redirect('/complaint')->with('sent', 'Email Sent!!');
 
     }
-    public function store(Complaint $complaint){
-        $complaint->update($this->validateComplaint());
+    public function store(){
 
+        $complaint = new Complaint();
         $complaint->location = request('location');
         $complaint->type = request('type');
         $complaint->body = request('body');
         $complaint->user_id = Auth::user()->id;
 
         $complaint->save();
-        $this->send();
+//        $this->send();
 
 
     }
+    public function update(){
+        $complaint = new Complaint();
+        $id=request('id');
+        $complaint->where('id',$id)->update(['status' =>'Done' ]);
+        return redirect('/home');
+
+    }
+
     protected function validateComplaint(){
         return request()->validate([
             'location'=>'required',
