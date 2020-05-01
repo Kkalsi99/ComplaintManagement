@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Complaint') }}</div>
+                    <div class="card-header">{{ __('Complaint') }}<a href="/home" class="btn btn-primary mb-2 " style="float:right;">All Complaints</a></div>
 
                     <div class="card-body">
                         <form method="POST" action="/complaint">
@@ -65,7 +65,7 @@
                                         <p class="alert-success">{{session('sent')}}</p>
                                     @endif
                                     <button type="submit" class="btn btn-primary">
-                                        {{ __('Send Mail') }}
+                                        {{ __('Register Complaint') }}
                                     </button>
 
 

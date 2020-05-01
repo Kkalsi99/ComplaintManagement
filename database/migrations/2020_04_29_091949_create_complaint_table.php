@@ -13,7 +13,7 @@ class CreateComplaintTable extends Migration
      */
     public function up()
     {
-        Schema::create('complaint', function (Blueprint $table) {
+        Schema::create('complaints', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->string('location');
@@ -34,6 +34,6 @@ class CreateComplaintTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('complaint');
+        Schema::dropIfExists('complaints');
     }
 }

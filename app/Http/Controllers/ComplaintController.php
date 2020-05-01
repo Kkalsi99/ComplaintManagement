@@ -41,15 +41,15 @@ class ComplaintController extends Controller
      */
 
 
-    private function send()
+    private function send($id)
     {
+        dd(\request());
 
-
-        Mail::raw("hello", function ($message) {
-            $message->from(Auth::user()->email)->to('kkalsi95@gmail.com')
-                ->subject('Complaint');
-        });
-        return redirect('/complaint')->with('sent', 'Email Sent!!');
+//        Mail::raw("hello", function ($message) {
+//            $message->to('kkalsi95@gmail.com')
+//                ->subject('Complaint');
+//        });
+//        return redirect('/complaint')->with('sent', 'Email Sent!!');
 
     }
     public function store(){
