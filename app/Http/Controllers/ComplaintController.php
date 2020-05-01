@@ -58,12 +58,13 @@ class ComplaintController extends Controller
 
 
 
+
 //         Mail::send('email.mail', [], function ($message) {
 //             $message->to('kkalsi95@gmail.com', 'Kashish')->subject('Laravel Basic Testing Mail');
 //             $message->cc('sdk26071994@gmail.com', 'SDK')->subject('Laravel Basic Testing Mail');
 //         });
 
-        return redirect('/complaint')->with('sent', 'Email Sent!!');
+
     }
     private function sendResolved($user,$complaint)
     {
@@ -82,6 +83,7 @@ class ComplaintController extends Controller
 //         });
 
 
+
     }
     public function store(){
 
@@ -98,6 +100,7 @@ class ComplaintController extends Controller
 
 
         $this->sendRegistered($technician);
+        return redirect('/complaint')->with('sent', 'A Email also has been Sent!!');
 
 
     }

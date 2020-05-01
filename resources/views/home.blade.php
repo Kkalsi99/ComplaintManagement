@@ -36,7 +36,7 @@
 
 
                                                 @else
-                                                    <a href="#" class="btn btn-primary mb-2">{{$complaint->status}}</a>
+                                            <button type="submit" class="btn btn-primary">{{$complaint->status}}</button>
                                             @endif
                                         @endif
 
