@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    @if(auth()->user()->role=='User')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -77,4 +78,9 @@
             </div>
         </div>
     </div>
+    @else
+        <script type="text/javascript">
+            window.location.href= "home";
+        </script>
+    @endif
 @endsection

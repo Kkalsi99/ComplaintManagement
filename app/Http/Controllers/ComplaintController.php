@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Complaint;
-use http\Client\Curl\User;
-use Illuminate\Http\Request;
+use App\User;
+use App\Mail\ComplaintMail;
+
+
+
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use PharIo\Manifest\Email;
-use phpDocumentor\Reflection\DocBlock\Tags\Example;
+
 
 /**
  * Class ComplaintController
@@ -20,6 +22,7 @@ class ComplaintController extends Controller
 {
 
     private $complaint;
+    private $user;
     /**
      * ComplaintController constructor.
      */
@@ -27,6 +30,8 @@ class ComplaintController extends Controller
     {
         $this->middleware('auth');
         $this->complaint = new Complaint();
+        $this->user = new User();
+
     }
 
     public function create(){
@@ -41,15 +46,41 @@ class ComplaintController extends Controller
      */
 
 
-    private function send($id)
-    {
-        dd(\request());
 
-//        Mail::raw("hello", function ($message) {
-//            $message->to('kkalsi95@gmail.com')
-//                ->subject('Complaint');
-//        });
-//        return redirect('/complaint')->with('sent', 'Email Sent!!');
+        private function sendRegistered($technician)
+    {
+        $data=array(
+            'technician'=> $technician,
+            'complaint'=>$this->complaint
+        );
+        Mail::to($technician->email)->cc(auth()->user()->email)->send(new ComplaintMail($data));
+
+
+
+
+//         Mail::send('email.mail', [], function ($message) {
+//             $message->to('kkalsi95@gmail.com', 'Kashish')->subject('Laravel Basic Testing Mail');
+//             $message->cc('sdk26071994@gmail.com', 'SDK')->subject('Laravel Basic Testing Mail');
+//         });
+
+        return redirect('/complaint')->with('sent', 'Email Sent!!');
+    }
+    private function sendResolved($user,$complaint)
+    {
+        $data=array(
+            'user'=> $user,
+            'complaint'=>$complaint
+        );
+        Mail::to($user->email)->cc(auth()->user()->email)->send(new ComplaintMail($data));
+
+
+
+
+//         Mail::send('email.mail', [], function ($message) {
+//             $message->to('kkalsi95@gmail.com', 'Kashish')->subject('Laravel Basic Testing Mail');
+//             $message->cc('sdk26071994@gmail.com', 'SDK')->subject('Laravel Basic Testing Mail');
+//         });
+
 
     }
     public function store(){
@@ -59,9 +90,14 @@ class ComplaintController extends Controller
         $this->complaint->type = request('type');
         $this->complaint->body = request('body');
         $this->complaint->user_id = Auth::user()->id;
+        $this->complaint->status = 'Processing';
+
 
         $this->complaint->save();
-        $this->send();
+        $technician=$this->user->where('role',$this->complaint->type)->first();
+
+
+        $this->sendRegistered($technician);
 
 
     }
@@ -70,6 +106,13 @@ class ComplaintController extends Controller
 
         $id=request('id');
         $this->complaint->where('id',$id)->update(['status' =>'Resolved' ]);
+
+        $complaint=$this->complaint->where('id',$id)->first();
+
+        $user=$this->user->where('id',$complaint->user_id)->first();
+
+        $this->sendResolved($user,$complaint);
+
         return redirect('/home');
 
     }
