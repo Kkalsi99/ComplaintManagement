@@ -19,13 +19,14 @@ class ComplaintController extends Controller
 
 {
 
-
+    private $complaint;
     /**
      * ComplaintController constructor.
      */
     public function __construct()
     {
         $this->middleware('auth');
+        $this->complaint = new Complaint();
     }
 
     public function create(){
@@ -44,30 +45,31 @@ class ComplaintController extends Controller
     {
 
 
-//        Mail::raw("hello", function ($message) {
-//            $message->from(Auth::user()->email)->to('foo@example.com')
-//                ->subject('Complaint');
-//        });
+        Mail::raw("hello", function ($message) {
+            $message->from(Auth::user()->email)->to('kkalsi95@gmail.com')
+                ->subject('Complaint');
+        });
         return redirect('/complaint')->with('sent', 'Email Sent!!');
 
     }
     public function store(){
 
-        $complaint = new Complaint();
-        $complaint->location = request('location');
-        $complaint->type = request('type');
-        $complaint->body = request('body');
-        $complaint->user_id = Auth::user()->id;
 
-        $complaint->save();
-//        $this->send();
+        $this->complaint->location = request('location');
+        $this->complaint->type = request('type');
+        $this->complaint->body = request('body');
+        $this->complaint->user_id = Auth::user()->id;
+
+        $this->complaint->save();
+        $this->send();
 
 
     }
     public function update(){
-        $complaint = new Complaint();
+
+
         $id=request('id');
-        $complaint->where('id',$id)->update(['status' =>'Done' ]);
+        $this->complaint->where('id',$id)->update(['status' =>'Resolved' ]);
         return redirect('/home');
 
     }

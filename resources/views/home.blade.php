@@ -21,7 +21,7 @@
                                     <p class="card-text">Type : {{$complaint->type}}</p>
                                     <p class="card-text">Content : {{$complaint->body}}</p>
                                     <p class="card-text ">Registered at : {{$complaint->created_at}}</p>
-                                    @if($complaint->status=='Done')
+                                    @if($complaint->status=='Resolved')
                                         <p class="card-text">Completed on : {{$complaint->updated_at}}</p>
                                         <a href="#" class="btn btn-success mb-2">{{$complaint->status}}</a>
                                         @else
