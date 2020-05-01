@@ -104,7 +104,7 @@ class ComplaintController extends Controller
 
 
     }
-    public function update(){
+    public function resolve(){
 
 
         $id=request('id');

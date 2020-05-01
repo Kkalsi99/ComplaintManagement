@@ -21,7 +21,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/complaint', 'ComplaintController@store');
-Route::get('/complaint','ComplaintController@create')->name('complaintbox');
-Route::post('/complaint/resolve', 'ComplaintController@update');
+Route::get('/complaint','ComplaintController@create');
+Route::post('/complaint/resolve', 'ComplaintController@resolve');
 
 
