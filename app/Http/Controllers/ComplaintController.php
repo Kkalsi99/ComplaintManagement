@@ -100,7 +100,7 @@ class ComplaintController extends Controller
 
 
         $this->sendRegistered($technician);
-        return redirect('/complaint')->with('sent', 'A Email also has been Sent!!');
+        return redirect('/complaint')->with('sent', 'A Email has also been Sent!!');
 
 
     }
