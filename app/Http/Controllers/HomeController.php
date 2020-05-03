@@ -26,12 +26,17 @@ class HomeController extends Controller
     public function index()
     {
         if (auth()->user()->role == 'User'){
-            $user=User::where('id',auth()->user()->id)->firstOrfail();
+            $user=User::where('id',auth()->user()->id)->orderBy('created_at','desc')->firstOrfail();
         $complaints=$user->complaints;}
-        elseif (auth()->user()->role == 'Software')
-            $complaints=Complaint::where('type','Software')->get();
-        else
-            $complaints=Complaint::where('type','Hardware')->get();
+        elseif (auth()->user()->role == 'Afi'){
+            $complaints=Complaint::get();
+            }
+        else{
+            $complaints=Complaint::where('type',auth()->user()->role)->get();
+
+        }
+
+
 
 
 

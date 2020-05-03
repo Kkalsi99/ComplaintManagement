@@ -13,7 +13,7 @@
                             @csrf
 
                             <div class="form-group row">
-                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Location') }}</label>
+                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Location/Department') }}</label>
 
                                 <div class="col-md-6">
                                     <input id="location" type="text" class="form-control @error('location') is-invalid @enderror" name="location" value="{{ old('location') }}" required autocomplete="location" autofocus>
@@ -32,6 +32,8 @@
                                     <select id="type" type="text" class="form-control @error('type') is-invalid @enderror" name="type" value="{{ old('type') }}" required autocomplete="type" autofocus>
                                         <option value="Hardware">Hardware</option>
                                         <option value="Software">Software</option>
+                                        <option value="Networking">Networking</option>
+                                        <option value="Website">Related to Website</option>
                                     </select>
                                     @error('type')
                                     <span class="invalid-feedback" role="alert">
@@ -47,7 +49,7 @@
                                 <label for="message" class="col-md-4 col-form-label text-md-right">{{ __('Complaint') }}</label>
 
                                 <div class="col-md-6">
-                                    <textarea id="message" type="text" class="form-control"  name="body"></textarea>
+                                    <textarea id="message" type="text" class="form-control @error('type') is-invalid @enderror"  name="body" required></textarea>
 
                                     @error('message')
                                     <div class="text-danger text-xs" role="alert">

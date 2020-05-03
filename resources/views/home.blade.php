@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
+<div class="container" style="justify-content: normal">
+    <div class="row">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header flex justify"><H2>Dashboard @if(auth::user()->role=='User')<a href="/complaint" class="btn btn-primary mb-2 " style="float:right;">New Complaint</a>@endif</H2>
+            <div class="card" style="width:60vw">
+                <div class="card-header flex justify"><H2>Dashboard @if(auth::user()->role=='User')<a href="/complaint" class="btn btn-primary mb-2 " style="float:right;">New Complaint</a>@elseif(auth::user()->role!='User'&&auth::user()->role!='Afi')<a href="/home/table" class="btn btn-primary mb-2 " style="float:right;">Complaint Table</a>@endif</H2>
 
                 </div>
 
@@ -14,18 +14,28 @@
 
                 <div class="card-body d-flex  flex-column flex-shrink-0">
 
-                    @foreach($complaints as $complaint)
+                    @if(auth::user()->role!='Afi')
+                        @foreach($complaints as $complaint)
                             <div class="card my-3 " style="">
                                 <div class="card-body">
-                                    <h5 class="card-title text-center">Complaint {{auth::user()->role}}</h5>
+                                    <h5 class="card-title text-center">{{auth::user()->role}} Complaint </h5>
                                     <p class="card-text">Type : {{$complaint->type}}</p>
                                     <p class="card-text">Content : {{$complaint->body}}</p>
                                     <p class="card-text ">Registered at : {{$complaint->created_at}}</p>
+                                    <p class="card-text ">Status : {{$complaint->status}}</p>
+                                    @if($complaint->status=='Unable to resolve')<p class="card-text ">Reason : {{$complaint->reason_for_not_resolvable}}</p>@endif
+
+{{--                                    checking status--}}
                                     @if($complaint->status=='Resolved')
+{{--                                        Resolved complaints--}}
                                         <p class="card-text">Completed on : {{$complaint->updated_at}}</p>
-                                        <a href="#" class="btn btn-success mb-2">{{$complaint->status}}</a>
+                                        <button type="submit" class="btn btn-success">{{$complaint->status}}</button>
+
                                         @else
-                                            @if(auth::user()->role!='User')<form method="POST" action="/complaint/resolve">
+{{--                                        Resolving the complaints--}}
+                                            @if(auth::user()->role!='User')
+{{--                                                Change status--}}
+                                            <form method="POST" action="/complaint/resolve" style="display: inline">
                                             @csrf
                                             <input name="id" value="{{$complaint->id}}" hidden>
 
@@ -33,10 +43,49 @@
                                                         {{ __('Resolve') }}
                                                     </button>
                                                 </form>
+{{--                                    not able resolve--}}
+                                        @if($complaint->status=='Processing'||$complaint->status=='Unable to resolve')
+                                                <button type="button" onclick="openReason({{$complaint->id}})" class="btn btn-danger" style="float:right;">
+                                                    Unable to resolve
+                                                </button>
+                                                <form method="POST" action="/complaint/reason">
+                                                    @csrf
+                                                <!-- Reason with js --><input name="id" value="{{$complaint->id}}" hidden>
+                                                        <div id="{{$complaint->id}}" style="display:none;">
+                                                           <br> <label for="reason">Enter Reason </label><br>
+                                                            <textarea class="form-control @error('reason') is-invalid @enderror" name="reason"  placeholder="Please Enter Your Reason Here" style="width: 55.5vw;height: 100px;" required></textarea>
+                                                            @error('reason')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                            @enderror
+                                                            <br><button type="submit" class="btn btn-dark">
+                                                                {{ __('Submit Reason') }}
+                                                            </button>
+                                                            <button type="button" onclick="closeReason({{$complaint->id}})" class="btn btn-light" style="float:right;">
+                                                               Close Dialog Box
+                                                            </button>
+                                                        </div>
+                                                </form>
+
+                                                <script type="application/javascript">
+                                                    function openReason(id) {
+                                                        document.getElementById(id).style.display = "inline-block";
+                                                    }
+                                                    function closeReason(id) {
+                                                        document.getElementById(id).style.display= "none";
+
+                                                    }
 
 
-                                                @else
+                                                </script>
+                                            @endif
+
+
+                                                @elseif($complaint->status=='Processing')
                                             <button type="submit" class="btn btn-primary">{{$complaint->status}}</button>
+                                                @else
+                                            <button type="submit" class="btn btn-danger">{{$complaint->status}}</button>
                                             @endif
                                         @endif
 
@@ -45,9 +94,35 @@
                             </div>
 
                         @endforeach
+
+                    @else
+                        <table style="table-layout: fixed">
+                            <tr>
+                                <th>Complaint id</th>
+                                <th>Complaint type</th>
+                                <th>Registered at</th>
+                                <th>Complaint status</th>
+                                <th>Resolved On</th>
+                                <th>Reason for unable to resolve</th>
+                            </tr>
+                            @foreach($complaints as $complaint)
+                            <tr>
+                                <td>{{$complaint->id}}</td>
+                                <td>{{$complaint->type}}</td>
+                                <td >{{$complaint->created_at}}</td>
+                                <td>{{$complaint->status}}</td>
+                                <td >@if($complaint->status=='Resolved'){{$complaint->updated_at}}
+                                        @else {{'----'}}
+                                        @endif
+                                </td>
+                                <td style="width:400px; word-wrap:break-word">{{$complaint->reason_for_not_resolvable}}</td>
+                            </tr>@endforeach
+                        </table>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 @endsection

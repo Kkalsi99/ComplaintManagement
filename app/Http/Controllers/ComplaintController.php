@@ -85,6 +85,24 @@ class ComplaintController extends Controller
 
 
     }
+    private function sendReason($user,$complaint)
+    {
+        $data=array(
+            'user'=> $user,
+            'complaint'=>$complaint
+        );
+
+
+
+
+         Mail::send('email.reason', ['data'=>$data], function ($message) {
+             $message->to('kkalsi95@gmail.com', 'Kashish')->subject('Regarding Complaint');
+
+         });
+
+
+
+    }
     public function store(){
 
 
@@ -118,6 +136,20 @@ class ComplaintController extends Controller
 
         return redirect('/home');
 
+    }
+    public function reason(){
+        $id=request('id');
+        $reason=request('reason');
+
+        $this->complaint->where('id',$id)->update(['reason_for_not_resolvable' =>$reason ,'status'=>'Unable to resolve']);
+
+        $complaint=$this->complaint->where('id',$id)->first();
+
+        $user=$this->user->where('id',$complaint->user_id)->first();
+
+        $this->sendReason($user,$complaint);
+
+        return redirect('/home');
     }
 
     protected function validateComplaint(){

@@ -1,5 +1,6 @@
 <?php
 
+use App\Complaint;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,5 +24,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/complaint', 'ComplaintController@store');
 Route::get('/complaint','ComplaintController@create');
 Route::post('/complaint/resolve', 'ComplaintController@resolve');
+Route::post('/complaint/reason', 'ComplaintController@reason');
+Route::get('/home/table', function () {
+    $complaints=Complaint::where('type',auth()->user()->role)->get();
+    return view('complaintTable',['complaints' => $complaints]);
+});
 
 

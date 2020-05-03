@@ -20,6 +20,7 @@ class CreateComplaintTable extends Migration
             $table->string('type');
             $table->text('body');
             $table->string('status')->default('Processing');
+            $table->string( 'reason_for_not_resolvable')->default('none');
             $table->timestamps();
             $table->foreign('user_id')
                 ->references('id')
