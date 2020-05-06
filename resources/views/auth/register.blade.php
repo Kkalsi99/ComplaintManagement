@@ -11,11 +11,15 @@
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 
+                            <p class="alert-primary">@isset($sent){{$sent}}@endisset</p>
+
+
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="@if(isset($User->name)){{$User->name}}
+                                @else{{ old('name')}} @endif" required autocomplete="name" autofocus>
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -28,7 +32,7 @@
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Mobile Number') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone" autofocus>
+                                <input id="name" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone" >
 
                                 @error('phone')
                                 <span class="invalid-feedback" role="alert">
@@ -44,7 +48,7 @@
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="@isset($User->email){{$User->email}}@endisset" required autocomplete="email">
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -81,6 +85,16 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Register') }}
                                 </button>
+                                <span>{{("  ")}}</span>
+                                <a class="oauth-container btn darken-4 white black-text" href="{{ route('login.provider', 'google') }}" style="text-transform:none; border:1px; margin-left:10px">
+
+
+                                    <img width="20px" style="margin-top:7px; margin-right:8px" alt="Google sign-in"
+                                         src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />Register with Google
+
+
+                                </a>
+
                             </div>
                         </div>
                     </form>

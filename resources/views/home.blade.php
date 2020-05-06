@@ -96,28 +96,10 @@
                         @endforeach
 
                     @else
-                        <table style="table-layout: fixed">
-                            <tr>
-                                <th>Complaint id</th>
-                                <th>Complaint type</th>
-                                <th>Registered at</th>
-                                <th>Complaint status</th>
-                                <th>Resolved On</th>
-                                <th>Reason for unable to resolve</th>
-                            </tr>
-                            @foreach($complaints as $complaint)
-                            <tr>
-                                <td>{{$complaint->id}}</td>
-                                <td>{{$complaint->type}}</td>
-                                <td >{{$complaint->created_at}}</td>
-                                <td>{{$complaint->status}}</td>
-                                <td >@if($complaint->status=='Resolved'){{$complaint->updated_at}}
-                                        @else {{'----'}}
-                                        @endif
-                                </td>
-                                <td style="width:400px; word-wrap:break-word">{{$complaint->reason_for_not_resolvable}}</td>
-                            </tr>@endforeach
-                        </table>
+
+                        <script type="text/javascript">
+                            window.location.href= "home/table";
+                        </script>
                     @endif
                 </div>
             </div>

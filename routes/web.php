@@ -21,13 +21,31 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+
 Route::post('/complaint', 'ComplaintController@store');
 Route::get('/complaint','ComplaintController@create');
-Route::post('/complaint/resolve', 'ComplaintController@resolve');
-Route::post('/complaint/reason', 'ComplaintController@reason');
-Route::get('/home/table', function () {
-    $complaints=Complaint::where('type',auth()->user()->role)->get();
-    return view('complaintTable',['complaints' => $complaints]);
-});
 
+
+
+Route::post('/complaint/resolve', 'ComplaintController@resolve');
+
+Route::post('/complaint/reason', 'ComplaintController@reason');
+
+
+
+
+Route::get('/home/table','ComplaintController@showComplaints');
+Route::post('/home/table','ComplaintController@sortComplaints');
+
+
+
+
+Route::get('redirect/{driver}', 'Auth\LoginController@redirectToProvider')
+    ->name('login.provider')
+    ->where('driver', implode('|', config('auth.socialite.drivers')));
+Route::get('{driver}/callback', 'Auth\LoginController@handleProviderCallback')
+    ->name('login.callback')
+    ->where('driver', implode('|', config('auth.socialite.drivers')));
 

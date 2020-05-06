@@ -7,8 +7,7 @@ use App\User;
 use App\Mail\ComplaintMail;
 
 
-
-
+use http\Env\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -38,7 +37,98 @@ class ComplaintController extends Controller
         return view('complaint');
 
     }
+    public function showComplaints(){
+        if(auth()->user()->role=='Afi'){
+            $complaints=Complaint::get();}
+        else
+        {$complaints=Complaint::where('type',auth()->user()->role)->get();}
 
+        return view('complaintTable',['complaints' => $complaints]);
+    }
+    //Searching
+    public function sortComplaints(){
+        $id=request('id');
+        $type=request('type');
+        $UstartDate=request('updated_startDate');
+        $location=request('location');
+
+        $UendDate=request('updated_endDate');
+
+        $CstartDate=request('created_startDate');
+        $CendDate=request('created_endDate');
+        $status=request('status');
+
+
+        if(auth()->user()->role=='Afi'){
+            $complaints=Complaint::get();}
+        else
+        {$complaints=Complaint::where('type',auth()->user()->role)->get();}
+
+
+//        if(isset($location))
+//            $complaints=Complaint::where('location','LIKE','%'.$location.'%')->get();
+
+//id
+        if(isset($id))
+            $complaints=$complaints->where('id',$id);
+            //type
+            if(isset($type))
+                $complaints=$complaints->where('type',$type);
+            //status
+            if(isset($status))
+                $complaints=$complaints->where('status',$status);
+
+            //Solved Between
+            if(isset($UstartDate)&&isset($UendDate)){
+                $UstartDate=$UstartDate.' 00:00:00';
+                $UendDate=$UendDate.' 23:59:59';
+                $complaints=$complaints->where('status','Resolved','Unable to resolve');
+                $complaints=$complaints->whereBetween('Updated_at',[date($UstartDate),date($UendDate)]);}
+            //Solved Before
+            if(isset($UendDate)){
+                $UstartDate='1999-01-01 00:00:00';
+                $UendDate=$UendDate.' 23:59:59';
+                $complaints=$complaints->where('status','Resolved','Unable to resolve');
+                $complaints=$complaints->whereBetween('Updated_at',[date($UstartDate),date($UendDate)]);
+
+            }
+            //Solved after
+            if(isset($UstartDate)){
+                $UstartDate=$UstartDate.' 00:00:00';
+                $UendDate=date('Y-m-d H:i:s');
+                $complaints=$complaints->where('status','Resolved','Unable to resolve');
+                $complaints=$complaints->whereBetween('Updated_at',[date($UstartDate),date($UendDate)]);
+
+            }
+            //registered between
+            if(isset($CstartDate)&&isset($CendDate)){
+                $CstartDate=$CstartDate.' 00:00:00';
+                $CendDate=$CendDate.' 23:59:59';
+                $complaints=$complaints->whereBetween('created_at',[date($CstartDate),date($CendDate)]);}
+            //Registerd Before
+            if(isset($CendDate)){
+                $CstartDate='1999-01-01 00:00:00';
+                $CendDate=$CendDate.' 23:59:59';
+                $complaints=$complaints->whereBetween('created_at',[date($CstartDate),date($CendDate)]);
+
+            }
+            //Registered after
+            if(isset($CstartDate)){
+                $CstartDate=$CstartDate.' 00:00:00';
+                $CendDate=date('Y-m-d H:i:s');
+                $complaints=$complaints->whereBetween('created_at',[date($CstartDate),date($CendDate)]);
+
+            }
+
+
+//            if(isset($id))
+//                $complaints->where('id');
+
+
+
+
+        return view('complaintTable',['complaints' => $complaints]);
+    }
 
     /**
      * Sends email
