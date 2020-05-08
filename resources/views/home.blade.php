@@ -20,6 +20,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title text-center">{{auth::user()->role}} Complaint </h5>
                                     <p class="card-text">Type : {{$complaint->type}}</p>
+                                    <p class="card-text">Location : {{$complaint->location}}</p>
                                     <p class="card-text">Content : {{$complaint->body}}</p>
                                     <p class="card-text ">Registered at : {{$complaint->created_at}}</p>
                                     <p class="card-text ">Status : {{$complaint->status}}</p>

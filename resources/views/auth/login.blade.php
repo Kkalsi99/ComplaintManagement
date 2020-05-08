@@ -57,15 +57,15 @@
                                 <div class="col s12 m6 offset-m3 center-align">
                                     <button type="submit" class="btn btn-primary">
                                         {{ __('Login') }}
-                                    </button><span>{{("  ")}}</span>
-                                     <a class="oauth-container btn darken-4 white black-text" href="{{ route('login.provider', 'google') }}" style="text-transform:none; border:1px; margin-left:10px">
+                                    </button><div style="display: inline;">
+                                     <a class="oauth-container btn darken-4 white black-text" href="{{ route('login.provider', 'google') }}" style="text-transform:none; border:1px;">
 
 
                                             <img width="20px" style="margin-top:7px; margin-right:8px" alt="Google sign-in"
                                                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />Login with Google
 
 
-                                    </a>
+                                    </a></div>
                                 </div>
 {{--                                <a href="{{ route('login.provider', 'google') }}"--}}
 {{--                                            class="btn btn-secondary">{{ __('Google Sign in') }}</a>--}}

@@ -78,7 +78,7 @@
                     @endauth
                 </div>
             @endif
-
+            <h1>Welcome to Complaint Register!!!</h1>
 
     </body>
 </html>

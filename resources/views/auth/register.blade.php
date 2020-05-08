@@ -32,7 +32,7 @@
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Mobile Number') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone" >
+                                <input id="phone" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone" >
 
                                 @error('phone')
                                 <span class="invalid-feedback" role="alert">
@@ -85,15 +85,15 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Register') }}
                                 </button>
-                                <span>{{("  ")}}</span>
-                                <a class="oauth-container btn darken-4 white black-text" href="{{ route('login.provider', 'google') }}" style="text-transform:none; border:1px; margin-left:10px">
+                                <div style="display: inline;">
+                                    <a class="oauth-container btn darken-4 white black-text" href="{{ route('login.provider', 'google') }}" style="text-transform:none; border:1px;">
 
 
-                                    <img width="20px" style="margin-top:7px; margin-right:8px" alt="Google sign-in"
-                                         src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />Register with Google
+                                        <img width="20px" style="margin-top:7px; margin-right:8px" alt="Google sign-in"
+                                             src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />Login with Google
 
 
-                                </a>
+                                    </a></div>
 
                             </div>
                         </div>
