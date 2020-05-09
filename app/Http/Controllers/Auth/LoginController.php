@@ -51,7 +51,6 @@ class LoginController extends Controller
         } else {
             $newUser                    = new User();
 //            $newUser->provider_name     = $driver;
-
             $newUser->name              = $user->getName();
             $newUser->email             = $user->getEmail();
             $newUser->created_at = now();

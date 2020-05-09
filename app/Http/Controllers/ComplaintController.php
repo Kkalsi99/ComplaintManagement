@@ -38,7 +38,7 @@ class ComplaintController extends Controller
 
     }
     public function showComplaints(){
-        if(auth()->user()->role=='Afi'){
+        if(auth()->user()->role=='Fi'){
             $complaints=Complaint::get();}
         else
         {$complaints=Complaint::where('type',auth()->user()->role)->get();}
@@ -59,14 +59,16 @@ class ComplaintController extends Controller
         $status=request('status');
 
 
-        if(auth()->user()->role=='Afi'){
+
+        if(auth()->user()->role=='Fi'){
+
             $complaints=Complaint::get();}
         else
         {$complaints=Complaint::where('type',auth()->user()->role)->get();}
 
 
-//        if(isset($location))
-//            $complaints=Complaint::where('location','LIKE','%'.$location.'%')->get();
+        if(isset($location))
+            $complaints=Complaint::where('location','LIKE','%'.$location.'%')->get();
 
 //id
         if(isset($id))
@@ -82,22 +84,22 @@ class ComplaintController extends Controller
             if(isset($UstartDate)&&isset($UendDate)){
                 $UstartDate=$UstartDate.' 00:00:00';
                 $UendDate=$UendDate.' 23:59:59';
-                $complaints=$complaints->where('status','Resolved','Unable to resolve');
-                $complaints=$complaints->whereBetween('Updated_at',[date($UstartDate),date($UendDate)]);}
+                $complaints=$complaints->whereIn('status',['Resolved','Unable to resolve']);
+                $complaints=$complaints->whereBetween('updated_at',[date($UstartDate),date($UendDate)]);}
             //Solved Before
             if(isset($UendDate)){
                 $UstartDate='1999-01-01 00:00:00';
                 $UendDate=$UendDate.' 23:59:59';
-                $complaints=$complaints->where('status','Resolved','Unable to resolve');
-                $complaints=$complaints->whereBetween('Updated_at',[date($UstartDate),date($UendDate)]);
+                $complaints=$complaints->whereIn('status',['Resolved','Unable to resolve']);
+                $complaints=$complaints->whereBetween('updated_at',[date($UstartDate),date($UendDate)]);
 
             }
             //Solved after
             if(isset($UstartDate)){
                 $UstartDate=$UstartDate.' 00:00:00';
                 $UendDate=date('Y-m-d H:i:s');
-                $complaints=$complaints->where('status','Resolved','Unable to resolve');
-                $complaints=$complaints->whereBetween('Updated_at',[date($UstartDate),date($UendDate)]);
+                $complaints=$complaints->whereIn('status',['Resolved','Unable to resolve']);
+                $complaints=$complaints->whereBetween('updated_at',[date($UstartDate),date($UendDate)]);
 
             }
             //registered between

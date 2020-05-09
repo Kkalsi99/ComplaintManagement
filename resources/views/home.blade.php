@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-8">
             <div class="card" style="width:60vw">
-                <div class="card-header flex justify"><H2>Dashboard @if(auth::user()->role=='User')<a href="/complaint" class="btn btn-primary mb-2 " style="float:right;">New Complaint</a>@elseif(auth::user()->role!='User'&&auth::user()->role!='Afi')<a href="/home/table" class="btn btn-primary mb-2 " style="float:right;">Complaint Table</a>@endif</H2>
+                <div class="card-header flex justify"><H2>Dashboard @if(auth::user()->role=='User')<a href="/complaint" class="btn btn-primary mb-2 " style="float:right;">New Complaint</a>@elseif(auth::user()->role!='User'&&auth::user()->role!='Fi')<a href="/home/table" class="btn btn-primary mb-2 " style="float:right;">Complaint Table</a>@endif</H2>
 
                 </div>
 
@@ -14,7 +14,7 @@
 
                 <div class="card-body d-flex  flex-column flex-shrink-0">
 
-                    @if(auth::user()->role!='Afi')
+                    @if(auth::user()->role!='Fi')
                         @foreach($complaints as $complaint)
                             <div class="card my-3 " style="">
                                 <div class="card-body">

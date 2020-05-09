@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="card" style="width:60vw">
-                    <div class="card-header flex justify"><H2>Dashboard <a href="/home" class="btn btn-primary mb-2 " style="float:right;">Resolve Complaints</a> </H2>
+                    <div class="card-header flex justify"><H2>Dashboard @if(auth::user()->role!='User'&&auth::user()->role!='Fi') <a href="/home" class="btn btn-primary mb-2 " style="float:right;">Resolve Complaints</a> @endif</H2>
 
                     </div>
 
@@ -16,7 +16,7 @@
 
                         <form method="POST" action="/home/table">
                             @csrf
-                            <input class="form-control" name="id" style="display: inline; width: 23%;" placeholder="Enter Id" value="{{ old('id') }}">@if(Auth()->user()->role=='Afi')
+                            <input class="form-control" name="id" style="display: inline; width: 23%;" placeholder="Enter Id" value="{{ old('id') }}">@if(Auth()->user()->role=='Fi')
                             <select class="form-control" name="type" style=" width: 23%;;display: inline">
                                 <option value="">Select Complaint Type</option>
                                 <option value="Software">Software</option>
@@ -29,7 +29,7 @@
                                 <option value="">Select Complaint Status</option>
                                 <option value="Resolved">Resolved</option>
                                 <option value="Processing">Processing</option>
-                                <option value="Unable to resolve">Unable to Resolved</option>
+                                <option value="Unable to resolve">Unable to Resolve</option>
                             </select>
                             <input class="form-control" name="location" style=" width: 23%;;display: inline" placeholder="Enter Location">
                             <br>
@@ -59,7 +59,7 @@
                                     <th>Location</th>
                                     <th>Registered at</th>
                                     <th>Complaint status</th>
-                                    <th>Resolved On</th>
+                                    <th>Processed On</th>
                                     <th>Reason for unable to resolve</th>
                                 </tr>
                                 @foreach($complaints as $complaint)
@@ -69,7 +69,7 @@
                                         <td>{{$complaint->location}}</td>
                                         <td>{{$complaint->created_at}}</td>
                                         <td>{{$complaint->status}}</td>
-                                        <td >@if($complaint->status=='Resolved'){{$complaint->updated_at}}
+                                        <td >@if($complaint->status!='Processing'){{$complaint->updated_at}}
                                             @else {{'----'}}
                                             @endif
                                         </td>
