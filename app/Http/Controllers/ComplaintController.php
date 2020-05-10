@@ -39,7 +39,9 @@ class ComplaintController extends Controller
     }
     public function showComplaints(){
         if(auth()->user()->role=='Fi'){
-            $complaints=Complaint::get();}
+            $complaints=Complaint::get();
+
+        }
         else
         {$complaints=Complaint::where('type',auth()->user()->role)->get();}
 
@@ -47,6 +49,9 @@ class ComplaintController extends Controller
     }
     //Searching
     public function sortComplaints(){
+
+
+
         $id=request('id');
         $type=request('type');
         $UstartDate=request('updated_startDate');
@@ -61,7 +66,6 @@ class ComplaintController extends Controller
 
 
         if(auth()->user()->role=='Fi'){
-
             $complaints=Complaint::get();}
         else
         {$complaints=Complaint::where('type',auth()->user()->role)->get();}

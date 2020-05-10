@@ -36,6 +36,7 @@ Route::post('/complaint/reason', 'ComplaintController@reason');
 
 
 
+
 Route::get('/home/table','ComplaintController@showComplaints');
 Route::post('/home/table','ComplaintController@sortComplaints');
 

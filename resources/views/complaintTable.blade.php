@@ -55,7 +55,7 @@
                             <table>
                                 <tr>
                                     <th>Complaint id</th>
-                                    <th>Complaint type</th>
+                                    <th>Complaint type @if(Auth()->user()->role=='Fi')(Technician)@endif</th>
                                     <th>Location</th>
                                     <th>Registered at</th>
                                     <th>Complaint status</th>
@@ -65,7 +65,7 @@
                                 @foreach($complaints as $complaint)
                                     <tr>
                                         <td>{{$complaint->id}}</td>
-                                        <td>{{$complaint->type}}</td>
+                                        <td>{{$complaint->type}}@if(Auth()->user()->role=='Fi')({{$techName=App\User::where('role',$complaint->type)->get()->pluck('name')->first()}})@endif</td>
                                         <td>{{$complaint->location}}</td>
                                         <td>{{$complaint->created_at}}</td>
                                         <td>{{$complaint->status}}</td>
