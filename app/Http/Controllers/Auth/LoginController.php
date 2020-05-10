@@ -49,18 +49,20 @@ class LoginController extends Controller
         if ($existingUser) {
             auth()->login($existingUser, true);
         } else {
-            $newUser                    = new User();
-//            $newUser->provider_name     = $driver;
-            $newUser->name              = $user->getName();
-            $newUser->email             = $user->getEmail();
-            $newUser->created_at = now();
-            $newUser->updated_at = now();
-            $newUser->email_verified_at = now();
+            // $newUser                    = new User();
+            // //            $newUser->provider_name     = $driver;
+            // $newUser->name              = $user->getName();
+            // $newUser->email             = $user->getEmail();
+            // $newUser->created_at = now();
+            // $newUser->updated_at = now();
+            // $newUser->email_verified_at = now();
 
+            session(['social_email' => $user->getEmail()]);
+            session(['social_name' => $user->getName()]);
 
-            return view('auth.register',['User'=> $newUser,'sent'=>'Please Complete your details']);
+            return redirect()->route('register');
 
-//            auth()->login($newUser, true);
+            //            auth()->login($newUser, true);
         }
 
         return redirect($this->redirectPath());
