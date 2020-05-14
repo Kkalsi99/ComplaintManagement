@@ -35,6 +35,10 @@ Route::post('/complaint/reason', 'ComplaintController@reason');
 
 
 
+Route::get('/update','Auth\UpdateController@updateview');
+Route::post('/update','Auth\UpdateController@update');
+
+
 
 
 Route::get('/home/table','ComplaintController@showComplaints');

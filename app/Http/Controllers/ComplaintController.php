@@ -39,7 +39,7 @@ class ComplaintController extends Controller
     }
     public function showComplaints(){
         if(auth()->user()->role=='Fi'){
-            $complaints=Complaint::get();
+            $complaints=Complaint::orderBy('created_at','desc')->get();
 
         }
         else
@@ -66,9 +66,9 @@ class ComplaintController extends Controller
 
 
         if(auth()->user()->role=='Fi'){
-            $complaints=Complaint::get();}
+            $complaints=Complaint::orderBy('created_at','desc')->get();}
         else
-        {$complaints=Complaint::where('type',auth()->user()->role)->get();}
+        {$complaints=Complaint::where('type',auth()->user()->role)->orderBy('created_at','desc')->get();}
 
 
         if(isset($location))

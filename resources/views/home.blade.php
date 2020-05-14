@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@if(isset(auth()->user()->phone))
 
 @section('content')
 <div class="container" style="justify-content: normal">
@@ -109,3 +110,7 @@
 </div>
 
 @endsection
+@else
+    <script type="text/javascript">
+        window.location.href= "update";
+    </script>@endif
