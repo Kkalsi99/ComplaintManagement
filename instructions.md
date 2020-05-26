@@ -8,8 +8,9 @@ Do the following steps serially to run the project in your computer.
 ## Run Commands
 1. "composer install"
 2. "npm install
-3. Jump to Create files and folder
+3. Jump to Create files and folder section
 4. "php artisan key:gen"
+
 ## Create files and folders
 1. Create a .env file 
 2. Copy the following:
