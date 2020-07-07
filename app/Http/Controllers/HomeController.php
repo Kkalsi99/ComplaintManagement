@@ -28,7 +28,7 @@ class HomeController extends Controller
         if (auth()->user()->role == 'User'){
             $user=User::where('id',auth()->user()->id)->orderBy('created_at','desc')->firstOrfail();
         $complaints=$user->complaints;}
-        elseif (auth()->user()->role == 'Afi'){
+        elseif (auth()->user()->role == ''){
             $complaints=Complaint::get();
             }
         else{

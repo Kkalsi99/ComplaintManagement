@@ -55,7 +55,7 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="card" style="width:78vw">
-                    <div class="card-header flex justify"><H2>Dashboard @if(auth::user()->role!='User'&&auth::user()->role!='Fi') <a href="/home" class="btn btn-primary mb-2 " style="float:right;">Resolve Complaints</a> @endif</H2>
+                    <div class="card-header flex justify"><H2>Complaints Table @if(auth::user()->role!='User'&&auth::user()->role!='Computer Centre'&&auth::user()->role!='Construction Cell') <a href="/home" class="btn btn-primary mb-2 " style="float:right;">Resolve Complaints</a> @endif</H2>
 
                     </div>
 
@@ -76,27 +76,42 @@
                                     <th>Processed On</th>
                                     <th>Reason for unable to resolve</th>
                                 </tr>
-                            </thead>
-                                @foreach($complaints as $complaint)
+                                                                </thead> <div style="display: none">
+@if(request('page'))
+   {{$page=request('page')}}
+@else {{$page=1}} @endif</div>
+
+
+                                        @for($i=($page-1)*50;$i<$page*50&&$i<$size;$i++)
                                     <tbody>
                                     <tr>
-                                        <td>{{$complaint->id}}</td>
-                                        <td>{{$techName=App\User::where('id',$complaint->user_id)->get()->pluck('name')->first()}}</td>
-                                        <td>{{$complaint->type}}@if(Auth()->user()->role=='Fi')({{$techName=App\User::where('role',$complaint->type)->get()->pluck('name')->first()}})@endif</td>
-                                        <td>{{$complaint->location}}</td>
-                                        <td>{{$complaint->created_at}}</td>
-                                        <td>{{$complaint->status}}</td>
-                                        <td >@if($complaint->status!='Processing'){{$complaint->updated_at}}
+                                        <td>{{$complaints[$i]->id}}</td>
+                                        <td>{{$techName=App\User::where('id',$complaints[$i]->user_id)->get()->pluck('name')->first()}}</td>
+                                        <td>{{$complaints[$i]->type}}@if(Auth()->user()->role=='Fi')({{$techName=App\User::where('role',$complaints[$i]->type)->get()->pluck('name')->first()}})@endif</td>
+                                        <td>{{$complaints[$i]->location}}</td>
+                                        <td>{{$complaints[$i]->created_at}}</td>
+                                        <td>{{$complaints[$i]->status}}</td>
+                                        <td >@if($complaints[$i]->status!='Processing'){{$complaints[$i]->updated_at}}
                                             @else {{'----'}}
                                             @endif
                                         </td>
-                                        <td style="width:300px; word-wrap:break-word">@if($complaint->status=='Unable to resolve'){{$complaint->reason_for_not_resolvable}}
+                                        <td style="width:300px; word-wrap:break-word">@if($complaints[$i]->status=='Unable to resolve'){{$complaints[$i]->reason_for_not_resolvable}}
                                             @else {{'----'}}
                                             @endif</td>
-                                    </tr>@endforeach
+                                    </tr>@endfor
                                     </tbody>
                             </table>
 
+                        <div style="text-align: right">
+                            <div style="display: none">
+                                @if(request('page'))
+                                    {{$page=request('page')}}
+                                @else {{$page=1}} @endif</div>
+
+                                <a href=@if($page>1)"table?page={{$page-1}}"  @endif>Previous</a>
+                            {{$page}}
+                                <a href=@if($page<$size/50)"table?page={{$page+1}}"@endif>Next</a>
+                            </div>
                     </div>
                 </div>
             </div>

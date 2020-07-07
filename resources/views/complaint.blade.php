@@ -27,15 +27,56 @@
                                 </div>
                             </div>
                             <div class="form-group row">
+                                <label for="Category" class="col-md-4 col-form-label text-md-right">{{ __('Complaint Category') }}</label>
+
+                                <div class="col-md-6">
+                                    <script type="application/javascript">
+                                        let complaint = {
+                                            'Computer Centre': ["Hardware","Networking","Software","Related to Website"],
+                                            'Construction Cell': ["Construction","Electricity","General"]
+                                        }
+                                        function makeSubmenu(value) {
+                                            if(value.length==0) document.getElementById("type").innerHTML = "<option></option>";
+                                            else {
+                                                let comOptions = "";
+                                                for(comType in complaint[value]) {
+                                                    comOptions+="<option value="+complaint[value][comType]+">"+complaint[value][comType]+"</option>";
+
+                                                }
+                                                document.getElementById("type").innerHTML = comOptions;
+                                            }
+                                        }
+
+                                        function resetSelection() {
+                                            document.getElementById("category").selectedIndex = 0;
+                                            document.getElementById("type").selectedIndex = 0;
+                                        }
+                                    </script>
+                                    <select id="category" type="text" class="form-control @error('category') is-invalid @enderror" onchange="makeSubmenu(this.value)" name="category" value="{{ old('category') }}" required autocomplete="category" autofocus>
+                                        <option value="" disabled selected>Complaint Category</option>
+                                        <option value="Computer Centre">Computer Centre</option>
+                                        <option value="Construction Cell">Construction Cell</option>
+                                    </select>
+
+                                    @error('type')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <label for="type" class="col-md-4 col-form-label text-md-right">{{ __('Complaint Type') }}</label>
 
                                 <div class="col-md-6">
+
                                     <select id="type" type="text" class="form-control @error('type') is-invalid @enderror" name="type" value="{{ old('type') }}" required autocomplete="type" autofocus>
-                                        <option value="Hardware">Hardware</option>
-                                        <option value="Software">Software</option>
-                                        <option value="Networking">Networking</option>
-                                        <option value="Website">Related to Website</option>
+
+                                        <option value="" disabled selected>Select Complaint Category first</option>
+
+
                                     </select>
+
                                     @error('type')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

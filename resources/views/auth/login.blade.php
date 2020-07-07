@@ -57,8 +57,8 @@
                                 <div class="col s12 m6 offset-m3 center-align">
                                     <button type="submit" class="btn btn-primary">
                                         {{ __('Login') }}
-                                    </button><div style="display: inline;">
-                                     <a class="oauth-container btn darken-4 white black-text" href="{{ route('login.provider', 'google') }}" style="text-transform:none; border:1px;">
+                                    </button>&nbsp;<div style="display: inline;">
+                                     <a class="oauth-container btn darken-4 white black-text btn-outline-dark btn btn-light" href="{{ route('login.provider', 'google') }}" style="text-transform:none; border:1px;">
 
 
                                             <img width="20px" style="margin-top:7px; margin-right:8px" alt="Google sign-in"

@@ -38,14 +38,18 @@ class ComplaintController extends Controller
 
     }
     public function showComplaints(){
-        if(auth()->user()->role=='Fi'){
-            $complaints=Complaint::orderBy('created_at','desc')->get();
+        $complaints=Complaint::orderBy('created_at','desc')->where('category',auth()->user()->role)->get();
+        if(sizeof($complaints)){
+            $complaints=Complaint::orderBy('created_at','desc')->where('category',auth()->user()->role)->get();
+
+
 
         }
         else
         {$complaints=Complaint::where('type',auth()->user()->role)->get();}
+        $size=sizeof($complaints);
 
-        return view('complaintTable',['complaints' => $complaints]);
+        return view('complaintTable',['complaints' => $complaints,'size'=>$size]);
     }
     //Searching
     public function sortComplaints(){
@@ -65,8 +69,11 @@ class ComplaintController extends Controller
 
 
 
-        if(auth()->user()->role=='Fi'){
-            $complaints=Complaint::orderBy('created_at','desc')->get();}
+        if(Complaint::orderBy('created_at','desc')->where('category',auth()->user()->role)->get()!='NULL'){
+            $complaints=Complaint::orderBy('created_at','desc')->where('category',auth()->user()->role)->get();
+            dd($complaints);
+
+            }
         else
         {$complaints=Complaint::where('type',auth()->user()->role)->orderBy('created_at','desc')->get();}
 
@@ -126,15 +133,16 @@ class ComplaintController extends Controller
 
             }
 
-
 //            if(isset($id))
 //                $complaints->where('id');
 
+            $size=sizeof($complaints);
 
 
 
-        return view('complaintTable',['complaints' => $complaints]);
+        return view('complaintTable',['complaints' => $complaints,'size'=>$size]);
     }
+
 
     /**
      * Sends email
@@ -203,6 +211,7 @@ class ComplaintController extends Controller
 
 
         $this->complaint->location = request('location');
+        $this->complaint->category = request('category');
         $this->complaint->type = request('type');
         $this->complaint->body = request('body');
         $this->complaint->user_id = Auth::user()->id;
@@ -252,6 +261,7 @@ class ComplaintController extends Controller
         return request()->validate([
             'location'=>'required',
             'type'=>'required',
+            'category'=>'required',
             'body'=>'required'
         ]);
     }
