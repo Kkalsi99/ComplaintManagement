@@ -46,7 +46,7 @@ class ComplaintController extends Controller
 
         }
         else
-        {$complaints=Complaint::where('type',auth()->user()->role)->get();}
+        {$complaints=Complaint::orderBy('created_at','desc')->where('type',auth()->user()->role)->get();}
         $size=sizeof($complaints);
 
         return view('complaintTable',['complaints' => $complaints,'size'=>$size]);
@@ -71,8 +71,6 @@ class ComplaintController extends Controller
 
         if(Complaint::orderBy('created_at','desc')->where('category',auth()->user()->role)->get()!='NULL'){
             $complaints=Complaint::orderBy('created_at','desc')->where('category',auth()->user()->role)->get();
-            dd($complaints);
-
             }
         else
         {$complaints=Complaint::where('type',auth()->user()->role)->orderBy('created_at','desc')->get();}
@@ -84,12 +82,15 @@ class ComplaintController extends Controller
 //id
         if(isset($id))
             $complaints=$complaints->where('id',$id);
+
             //type
             if(isset($type))
                 $complaints=$complaints->where('type',$type);
             //status
             if(isset($status))
                 $complaints=$complaints->where('status',$status);
+
+
 
             //Solved Between
             if(isset($UstartDate)&&isset($UendDate)){
@@ -137,10 +138,13 @@ class ComplaintController extends Controller
 //                $complaints->where('id');
 
             $size=sizeof($complaints);
+        $array=array();
+            foreach ($complaints as $complaint) {
+                array_push($array,$complaint);
+            }
+//             dd(($size));
 
-
-
-        return view('complaintTable',['complaints' => $complaints,'size'=>$size]);
+        return view('complaintTable',['complaints' => $array,'size'=>$size]);
     }
 
 

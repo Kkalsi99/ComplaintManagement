@@ -184,7 +184,7 @@
                 <h1 class="display-4"> NITH Complaint Registration Portal</h1>
                 <div class="row mt-5">
                     @auth
-                       
+
                     @else
                         <div class="col-6"><a class="nav-link" href="{{ route('register') }}"><button class="btn btn-warning btn-lg pl-5 pr-5 pt-2 pb-2">Register</button></a></div>
                     <div class="col-6"><a class="nav-link" href="{{ route('login') }}"><button class="btn btn-primary btn-lg pl-5 pr-5 pt-2 pb-2">Login</button></a></div>
@@ -226,7 +226,7 @@
     <div>
         <h1 class="display-3">About us</h1>
         <p class="display-4">
-            We trying solve maximum complaints of the students
+            We are trying solve maximum complaints of the students
         </p>
         <p class="lead">
             This is an online portal for complaint registration in NIT Hamirpur.
